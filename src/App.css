@@ -1,0 +1,19 @@
+.Auth-container{
+background-image: url("/src/assets/imgs/ella-olsson-C1Q3qOTlegg-unsplash\ 1.png");
+  
+}
+.bg-overlay{
+ background-image: linear-gradient( to left, rgba(0,0,0,0.4),rgba(47, 100, 51, 0.7));
+}
+.mob{
+  position: absolute;
+  bottom:45% ;
+  left: 27%;
+
+ 
+}
+.email{
+  position: relative;
+
+ 
+}
