@@ -17,3 +17,49 @@ background-image: url("/src/assets/imgs/ella-olsson-C1Q3qOTlegg-unsplash\ 1.png"
 
  
 }
+.bg-white{
+  border-radius: 12px;
+}
+.logBtn{
+  margin-bottom: 15px;
+}
+.text-color{
+  color: #B4B4B4;
+}
+.fa-mobile,.fa-lock, .fa-envelope{
+  transform: translateY(-185%);
+  padding: 0px 5px;
+  position: relative;
+  color: #e4dfdf;
+  
+}
+.fa-mobile::after,.fa-lock::after{
+  content: " ";
+  width: 2px;
+  height: 20px;
+  position: absolute;
+  left: 20px;
+ top: -3px;
+background-color: #ede8e8;
+  
+}
+
+.fa-lock::after{
+  content: " ";
+  width: 2px;
+  height: 20px;
+  position: absolute;
+  left: 21px;
+ top: -3px;
+background-color: #ede8e8;
+  
+}
+.fa-envelope::after{
+  content: " ";
+  width: 2px;
+  height: 20px;
+  position: absolute;
+  left: 23px;
+ top: -3px;
+background-color: #ede8e8;
+}

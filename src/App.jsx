@@ -16,6 +16,7 @@ import ProtectedRoute from './SharedModules/Components/ProtectedRoute/ProtectedR
 import { jwtDecode } from 'jwt-decode'
 import RequestResetPassword from './AuthModule/Components/RequestResetPassword/RequestResetPassword'
 import ResetPassword from './AuthModule/Components/ResetPassword/ResetPassword'
+import { ToastContainer } from 'react-toastify'
 
 
 function App() {
@@ -60,6 +61,7 @@ children:[{index:true,element:<Home/>},
   return (
     <>
  <RouterProvider router={routes}/>
+ <ToastContainer />
     </>
   )
 }

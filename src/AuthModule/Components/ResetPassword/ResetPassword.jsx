@@ -3,6 +3,8 @@ import logo from '../../../assets/imgs/4 3.png'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function ResetPassword() {
      const {register,handleSubmit,formState:{errors},watch}=useForm()
@@ -11,16 +13,16 @@ export default function ResetPassword() {
      const basUrl='http://upskilling-egypt.com:3002'
      const onSubmit =(data)=>{
        axios.post(basUrl+'/api/v1/Users/Reset',data).then((response)=>{
-        console.log(response);
+      
         navigate('/login')
         
        }).catch((error)=>{
-        console.log(error.response.data.message);
+       toast(error.response.data.message);
        })
      }
   return (<>
   <div className="Auth-container">
-            
+          
         <div className="row bg-overlay  vh-100">
             <div className="col-md-6 m-auto">
                 <div className="bg-white p-2" >
@@ -67,6 +69,3 @@ export default function ResetPassword() {
 
   )
 }
-
-// validate:(value) =>
-//                             {value===pass ||"doesn't match"}

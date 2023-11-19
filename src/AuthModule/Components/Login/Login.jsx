@@ -16,7 +16,6 @@ const onSubmit =(data)=>{
 axios.post(baseUrl+'/api/v1/Users/Login',data).then((response)=>{
     localStorage.setItem("adminToken",response.data.token)
     saveAdminData()
-   
     navigate('/dashboard')
 }).catch((error)=>{
     toast(error.response.data.message);
@@ -29,34 +28,35 @@ axios.post(baseUrl+'/api/v1/Users/Login',data).then((response)=>{
 
   return (
     <div className="Auth-container">
-              <ToastContainer />
+            
         <div className="row bg-overlay  vh-100">
             <div className="col-md-6 m-auto">
                 <div className="bg-white p-2" >
                     <div className="img text-center ">
-                        <img src={logo} className='w-25' alt="logo" />
+                        <img src={logo} className='w-50' alt="logo" />
                     </div>
                   
                     <form className='w-75 m-auto' onSubmit={handleSubmit(onSubmit)} >
               
                     <h3>Log In</h3>
-                    <p>welcome Back!Please enter your details</p>
+                    <p className='text-color'>welcome Back!Please enter your details</p>
                         <div className="form-valid my-3">
-                        <input className='form-control email ' type="email" placeholder='Enter your E-mail'
+                        <input className='form-control email  px-4 ' type="email" placeholder='Enter your E-mail'
                         {...register("email",{required:true,pattern:/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/})}
                          />
                          {errors.email&&errors.email.type==="required"&&(<span className='text-danger'>email is required</span>)}
-                    
+                         <i class="fa-solid fa-mobile"></i>
                         </div>
                         <div className="form-valid my-3">
-                        <input className='form-control' type="password" placeholder='password'{...register("password",{required:true})}
+                        <input className='form-control  px-4' type="password" placeholder='password'{...register("password",{required:true})}
                         />
                            {errors.password&&errors.password.type==="required"&&(<span className='text-danger'>password is required</span>)}
+                           <i class="fa-solid fa-lock"></i>
                         </div>
                         <div className="form-group  my-3 position-relative d-flex justify-content-end">
                             <Link to ="/RequestResetPassword" className='text-success'> Forget Password?</Link>
                         </div>
-                      <button className='bg-success form-control text-white'>Login</button>
+                      <button className='bg-success form-control text-white logBtn'>Login</button>
                     </form>
                 </div>
             </div>
