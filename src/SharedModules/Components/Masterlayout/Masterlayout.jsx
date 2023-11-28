@@ -14,8 +14,10 @@ export default function Masterlayout({adminData}){
         <div className="col-md-10">
             <div>
                <Navbar adminData={adminData} />
-               <Header/>
-               <Outlet/>
+              <div className="container-fluid">
+              <Outlet/>
+              </div>
+          
             </div>
         </div>
     </div>

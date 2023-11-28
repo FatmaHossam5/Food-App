@@ -63,3 +63,19 @@ background-color: #ede8e8;
  top: -3px;
 background-color: #ede8e8;
 }
+.sideBar-Container .ps-sidebar-container{
+  background-color: #1f263e;
+  color: #fff;
+  height: 100vh;
+}
+.sideBar-Container .ps-sidebar-container .ps-menu-button:hover{
+  background-color: #009247;
+}
+.header-content{
+  background-image: url(../src/assets/imgs/header-bg-svg.svg);
+  background-size: cover;
+  background-position: 100% 100%;
+}
+.section-container{
+  background-color: #f0ffef
+}

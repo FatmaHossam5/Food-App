@@ -36,7 +36,7 @@ export default function ResetPassword() {
                     <p>Please Enter Your Otp  or Check Your Inbox</p>
                         <div className="form-valid my-3">
                         <input className='form-control email my-2' type="email" placeholder='Enter your E-mail'
-                      {...register("email",{required:true,pattern:/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/})}
+                      {...register("email",{required:true,pattern:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}/})}
                          />
                     {errors.email&&errors.email.type==="required"&&(<span className='text-danger '>Email is required</span>)}
                         </div>

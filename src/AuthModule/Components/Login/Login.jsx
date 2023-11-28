@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import logo from "../../../assets/imgs/4 3.png"
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
@@ -9,16 +9,24 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Login({saveAdminData}) {
-    const {register,handleSubmit,formState:{errors}}=useForm()
-    const baseUrl= "http://upskilling-egypt.com:3002";
+    const {register,handleSubmit,formState:{errors}}=useForm();
+    // const baseUrl= "http://upskilling-egypt.com:3002";
     const navigate=useNavigate()
+    const[isLoading,setIsLoading]=useState(false)
 const onSubmit =(data)=>{
-axios.post(baseUrl+'/api/v1/Users/Login',data).then((response)=>{
-    localStorage.setItem("adminToken",response.data.token)
+axios.post('https://upskilling-egypt.com:443/api/v1/Users/Login',data)
+
+.then((response)=>{
+  
+    localStorage.setItem("adminToken",response?.data?.token)
     saveAdminData()
+    setIsLoading(true)
     navigate('/dashboard')
+   
 }).catch((error)=>{
+    setIsLoading(false)
     toast(error.response.data.message);
+
 })
 }
 
@@ -28,6 +36,7 @@ axios.post(baseUrl+'/api/v1/Users/Login',data).then((response)=>{
 
   return (
     <div className="Auth-container">
+      
             
         <div className="row bg-overlay  vh-100">
             <div className="col-md-6 m-auto">
@@ -45,18 +54,18 @@ axios.post(baseUrl+'/api/v1/Users/Login',data).then((response)=>{
                         {...register("email",{required:true,pattern:/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/})}
                          />
                          {errors.email&&errors.email.type==="required"&&(<span className='text-danger'>email is required</span>)}
-                         <i class="fa-solid fa-mobile"></i>
+                         <i className="fa-solid fa-mobile"></i>
                         </div>
                         <div className="form-valid my-3">
-                        <input className='form-control  px-4' type="password" placeholder='password'{...register("password",{required:true})}
-                        />
-                           {errors.password&&errors.password.type==="required"&&(<span className='text-danger'>password is required</span>)}
-                           <i class="fa-solid fa-lock"></i>
+                       <input className='form-control px-4' type="password" placeholder='Password' 
+                       {...register("password",{required:true,pattern:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[a-zA-Z\d!@#$%^&*()_+]{6,}$/})}/>
+                           {errors.password&&errors.password.type==="required"&&(<span className='text-danger'>Password Is required</span>)}
+                           <i className="fa-solid fa-lock"></i>
                         </div>
                         <div className="form-group  my-3 position-relative d-flex justify-content-end">
                             <Link to ="/RequestResetPassword" className='text-success'> Forget Password?</Link>
                         </div>
-                      <button className='bg-success form-control text-white logBtn'>Login</button>
+                      <button className='bg-success form-control text-white logBtn' disabled={isLoading}>Login</button>
                     </form>
                 </div>
             </div>
@@ -68,3 +77,9 @@ axios.post(baseUrl+'/api/v1/Users/Login',data).then((response)=>{
 //FatmaHossam5$
 ///^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
 ///^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+
+
+   // "predeploy":" npm run deploy",
+    // "deploy":"gh-pages -d deploy",
+      // "homepage": "https://FatmaHossam5.github.io/Food-App",
+    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[a-zA-Z\d!@#$%^&*()_+]{6,}$/

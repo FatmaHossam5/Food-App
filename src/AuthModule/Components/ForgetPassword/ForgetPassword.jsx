@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import logo from '../../../assets/imgs/4 3.png'
 import { useForm } from 'react-hook-form'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-export default function () {
+export default function ({handleClose}) {
  const{register,handleSubmit,formState:{errors}} =useForm();
+
   const navigate=useNavigate()
  const onSubmit= (data)=>{
   console.log(data);
@@ -15,17 +16,18 @@ export default function () {
       Authorization: `Bearer ${localStorage.getItem("adminToken")}`
     }
   }).then((response)=>{
-    console.log(response);
-    navigate('/login')
+ 
+    handleClose()
   }).catch((error)=>{
     toast(error?.response?.data?.message);
+  
 })
  }
   return (
-    <div className="Auth-container">
+    <div>
             
-    <div className="row bg-overlay  vh-100">
-        <div className="col-md-6 m-auto">
+    <div className="row bg-danger-subtle   ">
+        <div >
             <div className="bg-white p-2" >
                 <div className="img text-center ">
                     <img src={logo} className='w-50' alt="logo" />

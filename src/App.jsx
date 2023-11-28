@@ -33,7 +33,7 @@ function App() {
       saveAdminData()
     }
   },[])
- const routes=createHashRouter([
+ const routes=createBrowserRouter([
   {path:"/dashboard",
 element: <ProtectedRoute adminData={adminData}> <Masterlayout adminData={adminData} />  </ProtectedRoute>,
 
