@@ -16,6 +16,10 @@ background-image: url("/src/assets/imgs/ella-olsson-C1Q3qOTlegg-unsplash\ 1.png"
   position: relative;
 
  
+
+}
+.img-container{
+  width: 50px;
 }
 .bg-white{
   border-radius: 12px;
