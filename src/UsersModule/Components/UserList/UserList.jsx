@@ -72,7 +72,7 @@ useEffect(()=>{
       <th scope="col">Image</th>
       <th scope="col">Price</th>
       <th scope="col">Description</th>
-      <th scope="col">Category</th>
+      <th scope="col">Category1</th>
 
       
 
