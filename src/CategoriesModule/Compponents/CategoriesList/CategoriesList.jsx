@@ -152,26 +152,28 @@ const getNameValue =(input)=>{
        </Modal.Body>
       
      </Modal>
-    <div className='row  mx-4 p-3'>
-      <div className="col-md-6">
-        <div>
-          <h6>
-            Categories Table Details
-          </h6>
+
+     <div className="container ">
+      <div className="addedCategory d-flex justify-content-between m-4">
+        <div className="leftS">
+          <h4>
+          Categories Table Details
+          </h4>
           <span>You can check all details</span>
         </div>
-
+        <button onClick={showAddModel} className='btn btn-success'>Add New Category</button>
       </div>
-      <div className="col-md-6 text-end">
-        <div>
-          <button onClick={showAddModel} className='btn btn-success'>Add New Category</button>
-        </div>
 
-      </div>
-      <input onChange={getNameValue} className='form-control my-2' type="text" />
-      {CategoriesList.length > 0 ? <div className=''>
-        <div>
-        <table className="table">
+     </div>
+
+     <div className="inputs col-md-9 m-auto position-relative">
+      <i className='fa-solid fa-search position-absolute top-25 '></i>
+     <input onChange={getNameValue} className='form-control my-2' type="text" placeholder='  Search Here' />
+     </div>
+
+     {CategoriesList.length > 0 ? <div className=''>
+        <div className='container m-auto'>
+        <table className="table table-striped text-center">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -185,7 +187,7 @@ const getNameValue =(input)=>{
               <tr key={index}>
                 <th scope='row'>{index + 1}</th>
                 <td>{category.name}</td>
-                <td>   <i onClick={() => showUpdateCategory(category)} className='fa fa-edit  text-warning'></i>
+                <td>   <i onClick={() => showUpdateCategory(category)} className='fa fa-edit  text-warning me-3'></i>
                   <i onClick={() => showDeleteCategory(category.id)} className='fa fa-trash  text-danger'></i> </td>
 
               </tr>
@@ -194,7 +196,7 @@ const getNameValue =(input)=>{
         </table>
         
         <nav aria-label="...">
-  <ul className="pagination pagination-sm">
+  <ul className="pagination pagination-l">
     {pagesArray.map((pageNo)=>
     
     <li key={pageNo} onClick={()=>getCategoriesList(pageNo,searchInput)} className="page-item"><a className="page-link">{pageNo}</a></li>
@@ -208,8 +210,7 @@ const getNameValue =(input)=>{
         </div>
        
       </div> : (<NoData />)}
-
-    </div>
+  
      
 </>
 

@@ -39,7 +39,7 @@ element: <ProtectedRoute adminData={adminData}> <Masterlayout adminData={adminDa
 
 
 errorElement:<NotFound/>,
-children:[{index:true,element:<Home/>},
+children:[{index:true,element:<Home adminData={adminData}/>},
 {path:"users",element:<UserList/>},
 {path:"recipes",element:<RecipesList/>},
 {path:"categories",element:<CategoriesList/>}

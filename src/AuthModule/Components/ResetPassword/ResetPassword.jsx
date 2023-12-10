@@ -7,12 +7,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function ResetPassword() {
-     const {register,handleSubmit,formState:{errors},watch}=useForm()
-     let pass=watch("password","")
+     const {register,handleSubmit,formState:{errors}}=useForm()
+   
        const navigate=useNavigate()
-     const basUrl='http://upskilling-egypt.com:3002'
+   
      const onSubmit =(data)=>{
-       axios.post(basUrl+'/api/v1/Users/Reset',data).then((response)=>{
+       axios.post('https://upskilling-egypt.com:443/api/v1/Users/Reset',data).then((response)=>{
+        toast("Done!")
       
         navigate('/login')
         
@@ -34,28 +35,32 @@ export default function ResetPassword() {
               
                     <h3> Reset  Password</h3>
                     <p>Please Enter Your Otp  or Check Your Inbox</p>
-                        <div className="form-valid my-3">
-                        <input className='form-control email my-2' type="email" placeholder='Enter your E-mail'
-                      {...register("email",{required:true,pattern:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}/})}
-                         />
-                    {errors.email&&errors.email.type==="required"&&(<span className='text-danger '>Email is required</span>)}
+                      
+                          <div className="form-group my-3">
+                        <input className='form-control email px-4 ' type="email" placeholder='Enter your E-mail'
+                        {...register("email",{required:true,pattern:/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/})}/>
+                      {errors.email&&errors.email.type==="required"&&(<span className='text-danger'>email is required</span>)}
+                      <i className="fa-regular fa-envelope left-icon"></i>
                         </div>
-                        <div className="form-valid my-3">
+                        <div className="form-group my-3">
                         <input className='form-control my-2'  placeholder='OTP'
                         {...register("seed",{required:true})}
                         />
                         {errors.seed&&errors.seed.type==="required"&&(<span className='text-danger '>OTP is required</span>)}
                         </div>
-                        <div className="form-valid my-3">
+                      
+                        <div className="form-group my-3">
                         <input className='form-control' type="password" placeholder='New Password'
                         {...register("password",{required:true})}
                         />
+                              <i className="fa-solid fa-lock  left-icon"></i>
                         {errors.password&&errors.password.type==="required"&&(<span className='text-danger'> Password is required</span>)}
                         </div>
-                        <div className="form-valid my-3">
+                        <div className="form-group my-3">
                         <input className='form-control' type="password" placeholder='confirm New Password'name='confirmNewPassword'
-                        {...register("confirmPassword",{required:true,})}
+                        {...register("confirmPassword",{required:true})}
                         />
+                              <i className="fa-solid fa-lock  left-icon"></i>
                         {errors.confirmPassword&&errors.confirmPassword.type==="required"&&(<span className='text-danger'> Required </span>)}
                         </div>
                       

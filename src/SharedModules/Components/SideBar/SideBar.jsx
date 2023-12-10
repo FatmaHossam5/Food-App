@@ -21,34 +21,38 @@ export default function SideBar() {
     navigate('/login')
   }
   return (
+
+
     <div className='sideBar-Container'>
         
 
-      <Modal show={show} onHide={handleClose}>
-       
-        <Modal.Body>
-          <ForgetPassword handleClose={handleClose}/>
-        </Modal.Body>
-       
-      </Modal>
+    <Modal show={show} onHide={handleClose}>
+     
+      <Modal.Body>
+        <ForgetPassword handleClose={handleClose}/>
+      </Modal.Body>
+     
+    </Modal>
 
-      <Sidebar collapsed={!isCollapsed}>
-  <Menu>
-  <MenuItem onClick={ handleToggle} icon={<img src={logo}alt='logo'/>} >  </MenuItem>
-    
-      <MenuItem icon={<i className="fa-solid fa-house" ></i>} component={<Link to ='/dashboard'/>}> Home </MenuItem>
-      <MenuItem  icon={ <i className="fa-regular fa-user"></i>} component={<Link to ='/dashboard/users'/>}> Users </MenuItem>
-   
+    <Sidebar collapsed={!isCollapsed}>
+<Menu>
+<MenuItem className='logo' onClick={ handleToggle} icon={<img src={logo}alt='logo' />}  >  </MenuItem>
+  
+    <MenuItem icon={<i className="fa-solid fa-house" ></i>} component={<Link to ='/dashboard'/>}> Home </MenuItem>
+    <MenuItem  icon={ <i className="fa-regular fa-user"></i>} component={<Link to ='/dashboard/users'/>}> Users </MenuItem>
     <MenuItem icon={<i className="fa-solid fa-qrcode"></i>} component={<Link to ='/dashboard/recipes'/>}> Recipes </MenuItem>
     <MenuItem icon={<i className="fa-regular fa-calendar"></i>} component={<Link to ='/dashboard/categories'/>}> Categories </MenuItem>
-    <MenuItem onClick={handleShow} icon={<i className="fa-solid fa-qrcode"></i>} > Change Password </MenuItem>
-    <MenuItem icon={<i className="fa-solid fa-right-from-bracket"></i>} onClick={logOut}> logOut </MenuItem>
+
+
+  <MenuItem onClick={handleShow} icon={<i className="fa-solid fa-lock"></i>} > Change Password </MenuItem>
+  <MenuItem icon={<i className="fa-solid fa-right-from-bracket"></i>} onClick={logOut}> logOut </MenuItem>
 
 
 
-  </Menu>
-</Sidebar >;
-    </div>
+</Menu>
+</Sidebar >
+  </div>
+
     
   )
 }

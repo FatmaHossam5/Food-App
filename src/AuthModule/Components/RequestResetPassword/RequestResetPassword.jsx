@@ -7,10 +7,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function RequestResetPassword() {
      const navigate=useNavigate()
-    const baseUrl='http://upskilling-egypt.com:3002'
+  
     const {register,handleSubmit,formState:{errors}}=useForm()
     const onSubmit =(data)=>{
-       axios.post(baseUrl+'/api/v1/Users/Reset/Request',data).then((response)=>{
+       axios.post('https://upskilling-egypt.com:443/api/v1/Users/Reset/Request',data).then((response)=>{
       toast("check your email")
         navigate('/ResetPassword')
        }).catch((error)=>{
@@ -32,11 +32,11 @@ export default function RequestResetPassword() {
               
                     <h3>Request Reset  Password</h3>
                     <p className='text-color'>Please Enter Your Email And Check Your Inbox</p>
-                        <div className="form-valid my-3">
+                        <div className="form-group my-3">
                         <input className='form-control email px-4 ' type="email" placeholder='Enter your E-mail'
                         {...register("email",{required:true,pattern:/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/})}/>
                       {errors.email&&errors.email.type==="required"&&(<span className='text-danger'>email is required</span>)}
-                      <i class="fa-regular fa-envelope"></i>
+                      <i className="fa-regular fa-envelope left-icon"></i>
                         </div>
                     
                       
