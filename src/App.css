@@ -185,3 +185,22 @@ li.ps-menuitem-root.logo{
   top: 30%;
   left:5px
 }
+/* App.css */
+.background-container {
+  background-image: url(./assets/imgs/background.png); /* or url(/images/your-image.jpg) */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100%;
+}
+.background-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3); /* Adjust opacity as needed */
+  z-index: 0;
+}
