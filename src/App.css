@@ -202,5 +202,20 @@ li.ps-menuitem-root.logo{
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.3); /* Adjust opacity as needed */
-  z-index: 0;
+  z-index: 1;
+}
+.bg-white {
+  position: relative;
+  z-index: 2; /* Ensure it's above the overlay */
+}
+.title p{
+  color: #49494999;
+}
+.title h3{
+  color: #494949;
+}
+.shared-input input{
+  border: none;
+background-color: #F7F7F7;
+border-radius: 5px;
 }

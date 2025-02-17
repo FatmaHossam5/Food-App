@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../../../assets/imgs/4 3.png'
+import logo from '../../../assets/imgs/logo.png'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
