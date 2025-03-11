@@ -219,3 +219,23 @@ li.ps-menuitem-root.logo{
 background-color: #F7F7F7;
 border-radius: 5px;
 }
+input:-webkit-autofill {
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px #f8f9fa inset !important; /* Matches Bootstrap bg-light */
+  color: #495057 !important; /* Text color */
+}
+
+input:-webkit-autofill::first-line {
+  color: #495057 !important;
+}
+input:focus {
+  border-color: #8391A1 !important; /* Matches your icon color */
+  box-shadow: 0 0 0 2px rgba(131, 145, 161, 0.2) !important; /* Soft shadow */
+  outline: none !important;
+}
+input::placeholder {
+  color: #8391A1 !important; /* Soft gray color */
+  font-size: 16px; /* Adjust size */
+  font-weight: 400; /* Normal weight */
+  opacity: 1; /* Ensure full visibility */
+}

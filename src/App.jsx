@@ -17,6 +17,7 @@ import { jwtDecode } from 'jwt-decode'
 import RequestResetPassword from './AuthModule/Components/RequestResetPassword/RequestResetPassword'
 import ResetPassword from './AuthModule/Components/ResetPassword/ResetPassword'
 import { ToastContainer } from 'react-toastify'
+import Register from './AuthModule/Components/Register/Register'
 
 
 function App() {
@@ -53,7 +54,8 @@ children:[{index:true,element:<Home adminData={adminData}/>},
       {path:"/login",element:<Login saveAdminData={saveAdminData} />},
       {path:"/forgetPassword",element:<ForgetPassword/>},
       {path:"/RequestResetPassword",element:<RequestResetPassword/>},
-      {path:"/ResetPassword",element:<ResetPassword/>}
+      {path:"/ResetPassword",element:<ResetPassword/>},
+      {path:"/register",element:<Register/>}
     ]
   }
  ])
