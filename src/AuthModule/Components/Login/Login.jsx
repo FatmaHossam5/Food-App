@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
-import logo from "../../../assets/imgs/logo.png"
-import { useForm } from 'react-hook-form'
 import axios from 'axios'
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import AuthForm from '../../../Components/SharedUI/AuthForm/AuthForm'
 import Input from '../../../Components/SharedUI/Input'
 
 
 
 export default function Login({ saveAdminData }) {
+  
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const navigate = useNavigate()
