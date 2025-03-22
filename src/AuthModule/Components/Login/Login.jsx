@@ -15,7 +15,13 @@ export default function Login({ saveAdminData }) {
 
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
+
+
+
   const Login = (data) => {
+    alert('jjjj')
+    console.log(data);
+    
     setIsLoading(true);
 
     axios.post('https://upskilling-egypt.com:3006/api/v1/Users/Login', data)
@@ -48,9 +54,11 @@ export default function Login({ saveAdminData }) {
     >
       <form onSubmit={handleSubmit(Login)} className="d-flex flex-column gap-3">
         {/* Email Input */}
-        <Input placeholder="Enter Your Email" type="email" Icon="fa-light fa-mobile-notch" />
+        <Input placeholder="Enter Your Email" type="email" Icon="fa-light fa-mobile-notch"  name="email" 
+          {...register('email', { required: true })} />
         {/* Password Input */}
-        <Input placeholder="Password" type="password" Icon="fa-light fa-lock" />
+        <Input placeholder="Password" type="password" Icon="fa-light fa-lock"    name="password" 
+          {...register('password', { required: true })} />
         <div className='d-flex justify-content-between mt-1'>
           <h6>
             <Link to="/register" className="text-dark text-decoration-none">
@@ -65,8 +73,8 @@ export default function Login({ saveAdminData }) {
         </div>
 
         {/* Submit Button */}
-        <div className='mt-1'>
-          <button type="submit" className="btn btn-success w-100" disabled={isLoading}>
+        <div className='my-3'>
+          <button type="submit" className="btn btn-success w-100" disabled={isLoading} style={{ backgroundColor: '#4AA35A', color: 'white' }}>
             {isLoading ? (
               <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
             ) : (

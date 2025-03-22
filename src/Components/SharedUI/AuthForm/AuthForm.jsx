@@ -7,7 +7,7 @@ export default function AuthForm({ backGroundwidth, title, paragraph, children }
     <>
       <div className='background-container row'>
 
-        <div className='col-lg-5 m-auto bg-white p-4 rounded shadow'>
+        <div className='col-12 col-md-10 col-lg-8 m-auto bg-white p-2 rounded shadow'>
           {/* Logo Section */}
           <div className="text-center mb-3">
             <img src={logo} alt="logo" className="img-fluid" />
