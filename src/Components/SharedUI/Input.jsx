@@ -7,7 +7,7 @@ const Input = React.forwardRef(({ placeholder, type = 'text', Icon, className, n
   };
 
   return (
-    <div className={`shared-input d-flex align-items-center rounded px-3 bg-light w-100 position-relative ${className}`}>
+    <div className={`shared-input d-flex align-items-center rounded ps-3 bg-light w-100 position-relative ${className}`}>
       {Icon && <i className={`${Icon} text-secondary`} style={{ color: '#8391A1' }} />}
       <div className="border-start mx-3" style={{ height: '24px' }}></div>
       <input
