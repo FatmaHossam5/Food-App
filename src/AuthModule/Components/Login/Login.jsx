@@ -19,24 +19,20 @@ export default function Login({ saveAdminData }) {
 
 
   const Login = (data) => {
-    alert('jjjj')
-    console.log(data);
     
     setIsLoading(true);
-
+    
     axios.post('https://upskilling-egypt.com:3006/api/v1/Users/Login', data)
-
-      .then((response) => {
-
-        localStorage.setItem("adminToken", response?.data?.token)
-        saveAdminData()
-        setIsLoading(true)
-        navigate('/dashboard')
+    
+    .then((response) => {
+      toast.success('login successfully!');
+      localStorage.setItem("adminToken", response?.data?.token)
+      saveAdminData()
+      setIsLoading(true)
+      navigate('/dashboard')
 
       }).catch((error) => {
-
-        toast(error.response.data.message);
-
+        toast.error(error.response.data.message);
       }).finally(() => {
         setIsLoading(false)
       })
