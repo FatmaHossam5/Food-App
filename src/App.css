@@ -239,3 +239,31 @@ input::placeholder {
   font-weight: 400; /* Normal weight */
   opacity: 1; /* Ensure full visibility */
 }
+/* errorStyles */
+/* Container for input and icon */
+.input-container {
+  position: relative;
+ 
+}
+.error-input {
+  border: 2px solid #dc3545; /* Red border */
+  padding-left: 2rem; /* Make room for the icon on the left */
+  outline: none;
+}
+/* This styles the error message below the input */
+.error-message {
+  color: #dc3545;          /* Red text */
+  font-size: 0.875rem;     /* Slightly smaller font */
+  margin-top: 0.25rem;     /* Small spacing above */
+  gap: 0.25rem;   
+  /* Small space between icon and text */
+}
+/* This is for the icon next to the error text */
+.error-icon {
+  position: absolute;
+  top: 12px;
+  right: 10px; /* Adjust as needed */
+  color: #dc3545; /* Red color for the icon */
+  font-size: 1rem; /* Adjust icon size if needed */
+  pointer-events: none; /* So it doesn't block clicking on the input */        /* Red icon color */
+}
