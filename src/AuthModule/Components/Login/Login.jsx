@@ -26,6 +26,8 @@ export default function Login({ saveAdminData }) {
     axios.post('https://upskilling-egypt.com:3006/api/v1/Users/Login', data)
     
     .then((response) => {
+      console.log(response);
+      
       toast.success('login successfully!');
       localStorage.setItem("adminToken", response?.data?.token)
       saveAdminData()

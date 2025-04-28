@@ -28,7 +28,7 @@ const showDeleteModal =(id)=>{
 
 
 const getUsersList =(pageNo,userName,groups)=>{
-axios.get("https://upskilling-egypt.com:443/api/v1/Users/",{
+axios.get("https://upskilling-egypt.com:3006/api/v1/Users/",{
   headers:{Authorization:`Bearer ${localStorage.getItem("adminToken")}`},
   params:{pageSize:10,
     pageNumber:pageNo,

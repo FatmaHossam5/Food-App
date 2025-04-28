@@ -267,3 +267,40 @@ input::placeholder {
   font-size: 1rem; /* Adjust icon size if needed */
   pointer-events: none; /* So it doesn't block clicking on the input */        /* Red icon color */
 }
+/* App.css */
+.table-custom {
+  border-collapse: separate;
+  border-spacing: 0 12px;        /* vertical gutter between rows */
+}
+.table-custom thead th {
+  border: none;
+  background: transparent;
+  color: #555;
+}
+.table-custom tbody tr {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.table-custom tbody tr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+.table-custom td,
+.table-custom th {
+  border: none !important;
+  vertical-align: middle;
+  padding: 12px 16px;
+}
+.avatar-initials {
+  background-color: #e0e0e0;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+}

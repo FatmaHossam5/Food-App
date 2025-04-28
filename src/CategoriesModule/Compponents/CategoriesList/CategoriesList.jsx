@@ -15,7 +15,7 @@ export default function CategoriesList() {
   const[searchInput,setSearchInput]=useState("")
  
   const getCategoriesList = (pageNo,name) => {
-    axios.get("https://upskilling-egypt.com:443/api/v1/Category/", {
+    axios.get("https://upskilling-egypt.com:3006/api/v1/Category/", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("adminToken")}`
       },params:{

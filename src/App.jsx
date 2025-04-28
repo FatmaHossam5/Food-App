@@ -10,7 +10,6 @@ import NotFound from './SharedModules/Components/NotFound/NotFound'
 import UserList from './UsersModule/Components/UserList/UserList'
 import RecipesList from './RecipesModule/Components/RecipesList/RecipesList'
 import CategoriesList from './CategoriesModule/Compponents/CategoriesList/CategoriesList'
-import Authlayout from './SharedModules/Components/Authlayout/Authlayout'
 import ForgetPassword from './AuthModule/Components/ForgetPassword/ForgetPassword'
 import ProtectedRoute from './SharedModules/Components/ProtectedRoute/ProtectedRoute'
 import { jwtDecode } from 'jwt-decode'
@@ -18,7 +17,10 @@ import RequestResetPassword from './AuthModule/Components/RequestResetPassword/R
 import ResetPassword from './AuthModule/Components/ResetPassword/ResetPassword'
 import { ToastContainer } from 'react-toastify'
 import Register from './AuthModule/Components/Register/Register'
+import AuthLayout from './SharedModules/Components/Authlayout/AuthLayout '
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+const queryClient = new QueryClient();
 
 function App() {
   const[adminData,setAdminData]=useState(null)
@@ -47,7 +49,7 @@ children:[{index:true,element:<Home adminData={adminData}/>},
 ]},
   {
     path:"",
-    element:  <Authlayout/> ,
+    element:  <AuthLayout/> ,
     errorElement:<NotFound/>,
     children:[
       {index:true,element:<Login saveAdminData={saveAdminData} />},
@@ -62,8 +64,10 @@ children:[{index:true,element:<Home adminData={adminData}/>},
 
   return (
     <>
- <RouterProvider router={routes}/>
- <ToastContainer />
+ <QueryClientProvider client={queryClient}>
+      <RouterProvider router={routes} />
+      <ToastContainer />
+    </QueryClientProvider>
     </>
   )
 }
