@@ -23,6 +23,23 @@ export default function Login({ saveAdminData }) {
 
     setIsLoading(true);
     
+    // Check for demo account credentials
+    if (data.email === 'admin@demo.com' && data.password === 'Admin123') {
+      // Create a mock JWT token for demo user
+      const demoToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkZW1vLWFkbWluIiwidXNlck5hbWUiOiJEZW1vIEFkbWluIiwiZW1haWwiOiJhZG1pbkBkZW1vLmNvbSIsInJvbGVzIjpbIkFkbWluIiwiY2FuQWRkVXNlciIsImNhblVwZGF0ZVVzZXIiLCJjYW5EZWxldGVVc2VyIiwiY2FuR2V0VXNlckJ5SWQiLCJjYW5HZXRDdXJyZW50VXNlciIsImNhblNlbmRNYWlsIiwiY2FuR2V0QWxsVXNlcnMiLCJjYW5DaGFuZ2VQYXNzd29yZCJdLCJpYXQiOjE3MzQ5NzI4MDAsImV4cCI6MTczNDk3NjQwMH0.demo-signature';
+      
+      setTimeout(() => {
+        toast.success('Demo login successful! Welcome to the Food App!');
+        localStorage.setItem("adminToken", demoToken);
+        saveAdminData();
+        navigate('/dashboard');
+        setIsLoading(false);
+      }, 1000); // Simulate API delay
+      
+      return;
+    }
+    
+    // Regular API login for non-demo accounts
     axios.post('https://upskilling-egypt.com:3006/api/v1/Users/Login', data)
     
     .then((response) => {
@@ -49,6 +66,30 @@ export default function Login({ saveAdminData }) {
       title="Log In"
       paragraph="Welcome back! Please enter your details"
     >
+      {/* Demo Account Info */}
+      <div className="demo-account-info mb-4 p-3 rounded" style={{
+        backgroundColor: '#e8f5e8',
+        border: '1px solid #4AA35A',
+        borderRadius: '8px'
+      }}>
+        <div className="d-flex align-items-center mb-2">
+          <i className="fa-solid fa-info-circle me-2" style={{ color: '#4AA35A' }}></i>
+          <h6 className="mb-0 fw-semibold" style={{ color: '#2c3e50' }}>Demo Account Available</h6>
+        </div>
+        <p className="mb-2 small" style={{ color: '#5a6c7d' }}>
+          Use these credentials to explore the app without registration:
+        </p>
+        <div className="demo-credentials">
+          <div className="d-flex align-items-center mb-1">
+            <i className="fa-solid fa-envelope me-2" style={{ color: '#4AA35A', fontSize: '12px' }}></i>
+            <span className="small fw-medium" style={{ color: '#2c3e50' }}>Email: <code style={{ backgroundColor: '#f8f9fa', padding: '2px 4px', borderRadius: '3px' }}>admin@demo.com</code></span>
+          </div>
+          <div className="d-flex align-items-center">
+            <i className="fa-solid fa-lock me-2" style={{ color: '#4AA35A', fontSize: '12px' }}></i>
+            <span className="small fw-medium" style={{ color: '#2c3e50' }}>Password: <code style={{ backgroundColor: '#f8f9fa', padding: '2px 4px', borderRadius: '3px' }}>Admin123</code></span>
+          </div>
+        </div>
+      </div>
       <form onSubmit={handleSubmit(Login)} className="d-flex flex-column" role="form" aria-label="Login form">
         {/* Email Input */}
         <div className="form-field">

@@ -369,9 +369,12 @@ console.log(recipe);
                 </label>
                 <div className="current-image-preview">
                   <img
-                    src={`https://upskilling-egypt.com:3006/${recipe.imagePath}`}
+                    src={recipe.imagePath.startsWith('http') ? recipe.imagePath : `https://upskilling-egypt.com:3006/${recipe.imagePath}`}
                     alt="Current Recipe"
                     className="current-image"
+                    onError={(e) => {
+                      e.target.src = avatar;
+                    }}
                   />
                 </div>
               </div>
@@ -446,9 +449,12 @@ console.log(recipe);
                 <div className="recipe-preview-image">
                   {recipe.imagePath ? (
                     <img
-                      src={`https://upskilling-egypt.com:3006/${recipe.imagePath}`}
+                      src={recipe.imagePath.startsWith('http') ? recipe.imagePath : `https://upskilling-egypt.com:3006/${recipe.imagePath}`}
                       alt={recipe.name}
                       className="preview-image"
+                      onError={(e) => {
+                        e.target.src = avatar;
+                      }}
                     />
                   ) : (
                     <div className="preview-placeholder">
@@ -797,8 +803,11 @@ console.log(recipe);
                     {item.imagePath ? (
                       <img
                               className="recipe-image"
-                        src={`https://upskilling-egypt.com:3006/${item.imagePath}`}
+                        src={item.imagePath.startsWith('http') ? item.imagePath : `https://upskilling-egypt.com:3006/${item.imagePath}`}
                         alt={item.name}
+                        onError={(e) => {
+                          e.target.src = avatar;
+                        }}
                       />
                     ) : (
                             <div className="recipe-image-placeholder">

@@ -26,6 +26,88 @@ export default function CategoriesList() {
  
   const getCategoriesList = async (pageNo = 1, name = '') => {
     setLoading(true);
+    
+    // Check if this is a demo account
+    const token = localStorage.getItem("adminToken");
+    if (token && token.includes('demo-signature')) {
+      // Use mock data for demo account
+      setTimeout(() => {
+        const mockCategories = [
+          {
+            id: 1,
+            name: "Appetizers"
+          },
+          {
+            id: 2,
+            name: "Main Courses"
+          },
+          {
+            id: 3,
+            name: "Desserts"
+          },
+          {
+            id: 4,
+            name: "Beverages"
+          },
+          {
+            id: 5,
+            name: "Salads"
+          },
+          {
+            id: 6,
+            name: "Soups"
+          },
+          {
+            id: 7,
+            name: "Pasta"
+          },
+          {
+            id: 8,
+            name: "Pizza"
+          },
+          {
+            id: 9,
+            name: "Seafood"
+          },
+          {
+            id: 10,
+            name: "Vegetarian"
+          },
+          {
+            id: 11,
+            name: "Fast Food"
+          },
+          {
+            id: 12,
+            name: "Healthy"
+          }
+        ];
+
+        // Filter categories based on search criteria
+        let filteredCategories = mockCategories;
+        
+        if (name) {
+          filteredCategories = filteredCategories.filter(category => 
+            category.name.toLowerCase().includes(name.toLowerCase())
+          );
+        }
+
+        // Simulate pagination
+        const startIndex = (pageNo - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        const paginatedCategories = filteredCategories.slice(startIndex, endIndex);
+        const totalPages = Math.ceil(filteredCategories.length / pageSize);
+
+        setCategoriesList(paginatedCategories);
+        setPagesArray(Array(totalPages).fill().map((_, i) => i + 1));
+        setCurrentPage(pageNo);
+        setTotalPages(totalPages);
+        setLoading(false);
+      }, 800); // Simulate API delay
+      return;
+    }
+
+    // Regular API call for non-demo accounts
     try {
       const response = await axios.get("https://upskilling-egypt.com:3006/api/v1/Category/", {
       headers: {
@@ -61,6 +143,20 @@ export default function CategoriesList() {
   }
   const onSubmit = async (data) => {
     setLoading(true);
+    
+    // Check if this is a demo account
+    const token = localStorage.getItem("adminToken");
+    if (token && token.includes('demo-signature')) {
+      // Simulate demo add operation
+      setTimeout(() => {
+        handleClose();
+        getCategoriesList(currentPage, searchInput);
+        setLoading(false);
+      }, 1000);
+      return;
+    }
+
+    // Regular API call for non-demo accounts
     try {
       await axios.post("https://upskilling-egypt.com:443/api/v1/Category/", data, {
         headers: {
@@ -85,6 +181,20 @@ export default function CategoriesList() {
 
   const updateCategory = async (data) => {
     setLoading(true);
+    
+    // Check if this is a demo account
+    const token = localStorage.getItem("adminToken");
+    if (token && token.includes('demo-signature')) {
+      // Simulate demo update operation
+      setTimeout(() => {
+        handleClose();
+        getCategoriesList(currentPage, searchInput);
+        setLoading(false);
+      }, 1000);
+      return;
+    }
+
+    // Regular API call for non-demo accounts
     try {
       await axios.put(`https://upskilling-egypt.com:443/api/v1/Category/${itemId}`, data, {
         headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
@@ -107,6 +217,20 @@ export default function CategoriesList() {
 
   const deleteCategory = async () => {
     setDeleteLoading(true);
+    
+    // Check if this is a demo account
+    const token = localStorage.getItem("adminToken");
+    if (token && token.includes('demo-signature')) {
+      // Simulate demo delete operation
+      setTimeout(() => {
+        getCategoriesList(currentPage, searchInput);
+        handleClose();
+        setDeleteLoading(false);
+      }, 1000);
+      return;
+    }
+
+    // Regular API call for non-demo accounts
     try {
       await axios.delete(`https://upskilling-egypt.com:443/api/v1/Category/${itemId}`, {
         headers: {

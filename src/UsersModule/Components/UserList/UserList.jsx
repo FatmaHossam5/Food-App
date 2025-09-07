@@ -43,6 +43,109 @@ const handleClose = () => {
 
 const getUsersList = async (pageNo = 1, userName = '', groups = '') => {
   setLoading(true);
+  
+  // Check if this is a demo account
+  const token = localStorage.getItem("adminToken");
+  if (token && token.includes('demo-signature')) {
+    // Use mock data for demo account
+    setTimeout(() => {
+      const mockUsers = [
+        {
+          id: 1,
+          userName: "John Doe",
+          email: "john.doe@example.com",
+          phoneNumber: "+1-555-0123",
+          imagePath: null,
+          group: { name: "Admin" }
+        },
+        {
+          id: 2,
+          userName: "Jane Smith",
+          email: "jane.smith@example.com",
+          phoneNumber: "+1-555-0124",
+          imagePath: null,
+          group: { name: "User" }
+        },
+        {
+          id: 3,
+          userName: "Mike Johnson",
+          email: "mike.johnson@example.com",
+          phoneNumber: "+1-555-0125",
+          imagePath: null,
+          group: { name: "User" }
+        },
+        {
+          id: 4,
+          userName: "Sarah Wilson",
+          email: "sarah.wilson@example.com",
+          phoneNumber: "+1-555-0126",
+          imagePath: null,
+          group: { name: "Admin" }
+        },
+        {
+          id: 5,
+          userName: "David Brown",
+          email: "david.brown@example.com",
+          phoneNumber: "+1-555-0127",
+          imagePath: null,
+          group: { name: "User" }
+        },
+        {
+          id: 6,
+          userName: "Emily Davis",
+          email: "emily.davis@example.com",
+          phoneNumber: "+1-555-0128",
+          imagePath: null,
+          group: { name: "User" }
+        },
+        {
+          id: 7,
+          userName: "Chris Miller",
+          email: "chris.miller@example.com",
+          phoneNumber: "+1-555-0129",
+          imagePath: null,
+          group: { name: "Admin" }
+        },
+        {
+          id: 8,
+          userName: "Lisa Garcia",
+          email: "lisa.garcia@example.com",
+          phoneNumber: "+1-555-0130",
+          imagePath: null,
+          group: { name: "User" }
+        }
+      ];
+
+      // Filter users based on search criteria
+      let filteredUsers = mockUsers;
+      
+      if (userName) {
+        filteredUsers = filteredUsers.filter(user => 
+          user.userName.toLowerCase().includes(userName.toLowerCase())
+        );
+      }
+      
+      if (groups) {
+        const roleName = groups === '1' ? 'Admin' : 'User';
+        filteredUsers = filteredUsers.filter(user => user.group.name === roleName);
+      }
+
+      // Simulate pagination
+      const startIndex = (pageNo - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+      const totalPages = Math.ceil(filteredUsers.length / pageSize);
+
+      setUserList(paginatedUsers);
+      setPagesArray(Array(totalPages).fill().map((_, i) => i + 1));
+      setCurrentPage(pageNo);
+      setTotalPages(totalPages);
+        setLoading(false);
+    }, 800); // Simulate API delay
+    return;
+  }
+
+  // Regular API call for non-demo accounts
   try {
     const response = await axios.get("https://upskilling-egypt.com:3006/api/v1/Users/", {
       headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
