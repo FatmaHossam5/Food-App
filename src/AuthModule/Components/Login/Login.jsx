@@ -31,7 +31,6 @@ export default function Login({ saveAdminData }) {
       toast.success('login successfully!');
       localStorage.setItem("adminToken", response?.data?.token)
       saveAdminData()
-      setIsLoading(true)
       navigate('/dashboard')
 
       }).catch((error) => {
@@ -46,34 +45,146 @@ export default function Login({ saveAdminData }) {
 
 
   return (
-
     <AuthForm
       title="Log In"
       paragraph="Welcome back! Please enter your details"
     >
-      <form onSubmit={handleSubmit(Login)} className="d-flex flex-column gap-3">
+      <form onSubmit={handleSubmit(Login)} className="d-flex flex-column" role="form" aria-label="Login form">
         {/* Email Input */}
-        <Input placeholder="Enter Your Email" type="email" Icon="fa-light fa-mobile-notch" name="email"
-          {...register('email', { required: true })} />
+        <div className="form-field">
+          <label htmlFor="email" className="form-label fw-semibold mb-1" style={{ color: '#2c3e50', fontSize: '14px' }}>
+            Email Address <span className="text-danger">*</span>
+          </label>
+          <Input 
+            placeholder="Enter your email address" 
+            type="email" 
+            Icon="fa-solid fa-envelope" 
+            name="email"
+            id="email"
+            className={errors.email ? 'error-input' : ''}
+            aria-label="Email address"
+            aria-invalid={errors.email ? 'true' : 'false'}
+            aria-describedby={errors.email ? 'email-error' : undefined}
+            {...register('email', { 
+              required: 'Email is required',
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: 'Please enter a valid email address'
+              }
+            })} 
+          />
+          {errors.email && (
+            <div id="email-error" className="text-danger mt-1 d-flex align-items-center" style={{ fontSize: '13px' }} role="alert">
+              <i className="fa-solid fa-exclamation-circle me-1" aria-hidden="true"></i>
+              <span>{errors.email.message}</span>
+            </div>
+          )}
+        </div>
+
         {/* Password Input */}
-        <Input placeholder="Password" type="password" Icon="fa-light fa-lock" name="password"
-          {...register('password', { required: true })} />
-        <div className='d-flex justify-content-between mt-1'>
-          <h6>
-            <Link to="/register" className="text-dark text-decoration-none">
-              Register Now?
-            </Link>
-          </h6>
-          <h6 style={{ color: '#4AA35A' }}>
-            <Link to="/forgetPassword" className="text-success text-decoration-none">
-              Forgot Password?
-            </Link>
-          </h6>
+        <div className="form-field">
+          <label htmlFor="password" className="form-label fw-semibold mb-1" style={{ color: '#2c3e50', fontSize: '14px' }}>
+            Password <span className="text-danger">*</span>
+          </label>
+          <Input 
+            placeholder="Enter your password" 
+            type="password" 
+            Icon="fa-solid fa-lock" 
+            name="password"
+            id="password"
+            className={errors.password ? 'error-input' : ''}
+            aria-label="Password"
+            aria-invalid={errors.password ? 'true' : 'false'}
+            aria-describedby={errors.password ? 'password-error' : undefined}
+            {...register('password', { 
+              required: 'Password is required',
+              minLength: {
+                value: 6,
+                message: 'Password must be at least 6 characters'
+              }
+            })} 
+          />
+          {errors.password && (
+            <div id="password-error" className="text-danger mt-1 d-flex align-items-center" style={{ fontSize: '13px' }} role="alert">
+              <i className="fa-solid fa-exclamation-circle me-1" aria-hidden="true"></i>
+              <span>{errors.password.message}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Links Section */}
+        <div className='d-flex flex-row justify-content-between align-items-center gap-3 mt-1'>
+          <Link 
+            to="/register" 
+            className="text-decoration-none fw-medium register-link"
+            style={{ 
+              fontSize: '0.9rem',
+              color: '#4AA35A',
+              transition: 'all 0.3s ease',
+              padding: '6px 10px',
+              borderRadius: '6px',
+              border: '1px solid transparent',
+              display: 'inline-flex',
+              alignItems: 'center',
+              textDecoration: 'none !important',
+              whiteSpace: 'nowrap'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = 'rgba(74, 163, 90, 0.1)';
+              e.target.style.borderColor = '#4AA35A';
+              e.target.style.transform = 'translateY(-1px)';
+              e.target.style.boxShadow = '0 2px 8px rgba(74, 163, 90, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'transparent';
+              e.target.style.borderColor = 'transparent';
+              e.target.style.transform = 'translateY(0)';
+              e.target.style.boxShadow = 'none';
+            }}
+          >
+            <i className="fa-solid fa-user-plus me-2"></i>
+            <span><strong>Register</strong></span>
+          </Link>
+          <Link 
+            to="/forgetPassword" 
+            className="text-decoration-none fw-medium forgot-password-link"
+            style={{ 
+              color: '#4AA35A', 
+              fontSize: '0.9rem',
+              transition: 'all 0.3s ease',
+              padding: '6px 10px',
+              borderRadius: '6px',
+              border: '1px solid transparent',
+              display: 'inline-flex',
+              alignItems: 'center',
+              textDecoration: 'none !important',
+              whiteSpace: 'nowrap'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = 'rgba(74, 163, 90, 0.08)';
+              e.target.style.borderColor = 'rgba(74, 163, 90, 0.3)';
+              e.target.style.transform = 'translateY(-1px)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'transparent';
+              e.target.style.borderColor = 'transparent';
+              e.target.style.transform = 'translateY(0)';
+            }}
+          >
+            <i className="fa-solid fa-key me-2"></i>
+            <span>Forgot Password?</span>
+          </Link>
         </div>
 
         {/* Submit Button */}
-        <Button type='submit' title='Log In' isLoading={isLoading} />
-
+        <div className="mt-1">
+          <Button 
+            type='submit' 
+            title={isLoading ? 'Signing In...' : 'Sign In'} 
+            isLoading={isLoading}
+            aria-label={isLoading ? 'Signing in, please wait' : 'Sign in to your account'}
+          />
+        </div>
       </form>
     </AuthForm>
   )

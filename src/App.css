@@ -193,6 +193,7 @@ li.ps-menuitem-root.logo{
   background-repeat: no-repeat;
   height: 100vh;
   width: 100%;
+  position: relative;
 }
 .background-container::before {
   content: '';
@@ -214,30 +215,214 @@ li.ps-menuitem-root.logo{
 .title h3{
   color: #494949;
 }
-.shared-input input{
-  border: none;
-background-color: #F7F7F7;
-border-radius: 5px;
-}
-input:-webkit-autofill {
-  background-color: transparent !important;
-  box-shadow: 0 0 0px 1000px #f8f9fa inset !important; /* Matches Bootstrap bg-light */
-  color: #495057 !important; /* Text color */
+
+/* Enhanced Input Styles */
+.shared-input {
+  background-color: #F8F9FA !important;
+  border: 2px solid transparent !important;
+  transition: all 0.3s ease !important;
 }
 
-input:-webkit-autofill::first-line {
-  color: #495057 !important;
+.shared-input:hover {
+  background-color: #F1F3F4 !important;
+  border-color: rgba(74, 163, 90, 0.3) !important;
 }
-input:focus {
-  border-color: #8391A1 !important; /* Matches your icon color */
-  box-shadow: 0 0 0 2px rgba(131, 145, 161, 0.2) !important; /* Soft shadow */
+
+.shared-input.error-input {
+  border-color: #dc3545 !important;
+  background-color: #fff5f5 !important;
+}
+
+.shared-input input {
+  border: none !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  font-size: 16px !important;
+}
+
+.shared-input input:focus {
   outline: none !important;
+  box-shadow: none !important;
 }
+
+input:-webkit-autofill {
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  color: #495057 !important;
+  -webkit-text-fill-color: #495057 !important;
+}
+
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+}
+
 input::placeholder {
-  color: #8391A1 !important; /* Soft gray color */
-  font-size: 16px; /* Adjust size */
-  font-weight: 400; /* Normal weight */
-  opacity: 1; /* Ensure full visibility */
+  color: #8391A1 !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  opacity: 1 !important;
+}
+
+/* Enhanced Button Styles */
+.enhanced-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.enhanced-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.enhanced-btn:disabled:hover {
+  transform: none !important;
+  box-shadow: 0 2px 4px rgba(74, 163, 90, 0.2) !important;
+}
+
+/* Error Message Styles */
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+  .background-container {
+    padding: 10px;
+  }
+  
+  .bg-white {
+    margin: 10px !important;
+    padding: 20px !important;
+  }
+  
+  .shared-input {
+    min-height: 52px !important;
+  }
+  
+  .enhanced-btn {
+    min-height: 44px !important;
+    font-size: 16px !important;
+  }
+  
+  /* Ensure links don't wrap on very small screens */
+  .register-link,
+  .forgot-password-link {
+    font-size: 0.8rem !important;
+    padding: 4px 8px !important;
+  }
+  
+  .register-link i,
+  .forgot-password-link i {
+    margin-right: 0.5rem !important;
+  }
+  
+  /* Adjust form gap for mobile */
+  .form-group {
+    gap: 1rem !important;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+  .form-group {
+    gap: 2rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .title h3 {
+    font-size: 1.5rem !important;
+  }
+  
+  .title p {
+    font-size: 0.9rem !important;
+  }
+}
+
+/* Focus Management for Accessibility */
+.shared-input:focus-within {
+  border-color: #4AA35A !important;
+  box-shadow: 0 0 0 3px rgba(74, 163, 90, 0.1) !important;
+}
+
+/* Loading State Animation */
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.enhanced-btn:disabled .spinner-border {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Enhanced Link Styles */
+.register-link {
+  position: relative;
+  overflow: hidden;
+}
+
+.register-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.register-link:hover::before {
+  left: 100%;
+}
+
+.forgot-password-link {
+  position: relative;
+}
+
+.forgot-password-link:hover {
+  color: #3d8a4a !important;
+}
+
+/* Focus styles for accessibility */
+.register-link:focus,
+.forgot-password-link:focus {
+  outline: 2px solid #4AA35A;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Active state */
+.register-link:active,
+.forgot-password-link:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 1px 3px rgba(74, 163, 90, 0.3) !important;
 }
 /* errorStyles */
 /* Container for input and icon */

@@ -20,7 +20,7 @@ export default function RequestResetPassword() {
         paragraph='No worries! Please enter your email and we will send a password reset link '>
         <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column gap-3">
           <div className='form-group d-flex justify-content-between '>
-            <Input type='email' placeholder='Enter your email' Icon='fa-light fa-envelope' className='py-2' />
+            <Input type='email' placeholder='Enter your email' Icon='fa-solid fa-envelope' className='py-2' />
           </div>
           <div className='form-group my-4 d-flex justify-content-center'>
             <button type="submit" className="btn  w-100" disabled={isLoading} style={{ backgroundColor: '#4AA35A', color: 'white' }}>

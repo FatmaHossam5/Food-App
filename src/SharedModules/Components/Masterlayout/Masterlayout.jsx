@@ -1,39 +1,63 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import Navbar from '../Navbar/Navbar'
 import Header from '../Header/Header'
 import SideBar from '../SideBar/SideBar'
+import './Masterlayout.css'
 
 export default function Masterlayout({adminData}){
-  return <>
-<div className='d-flex'>
-  <div className='Side'>
-  <SideBar/>
-  </div>
-  <div className='container-fluid'> 
-  <Navbar adminData={adminData} />
-              
-              <Outlet />
-  </div>
-</div>
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
 
+  // Handle responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768
+      setIsMobile(mobile)
+      if (!mobile) {
+        setSidebarCollapsed(false)
+      }
+    }
+    
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
+  return (
+    <div className="master-layout">
+      {/* Mobile Overlay */}
+      {isMobile && !sidebarCollapsed && (
+        <div 
+          className="mobile-overlay"
+          onClick={() => setSidebarCollapsed(true)}
+          aria-hidden="true"
+        />
+      )}
+      
+      {/* Sidebar */}
+      <aside className={`sidebar-container ${sidebarCollapsed ? 'collapsed' : ''} ${isMobile ? 'mobile' : ''}`}>
+        <SideBar 
+          isCollapsed={sidebarCollapsed}
+          onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+        />
+      </aside>
 
-  {/* <div className="container-fluid">
-    <div className="row">
-        <div className="col-md-2">
-        <SideBar/>
+      {/* Main Content Area */}
+      <main className="main-content">
+        {/* Navigation */}
+        <nav className="navbar-container">
+          <Navbar 
+            adminData={adminData}
+            onMenuToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+            isMobile={isMobile}
+          />
+        </nav>
+
+        {/* Page Content */}
+        <div className="content-wrapper">
+          <Outlet />
         </div>
-        <div className="col-md-10">
-            <div>
-               <Navbar adminData={adminData} />
-              <div className="container-fluid">
-              <Outlet/>
-              </div>
-          
-            </div>
-        </div>
+      </main>
     </div>
-  </div> */}
-  </>
+  )
 }

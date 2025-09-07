@@ -6,15 +6,14 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ForgetPassword from '../../../AuthModule/Components/ForgetPassword/ForgetPassword';
 
-export default function SideBar() {
+export default function SideBar({ isCollapsed, onToggle }) {
   let navigate=useNavigate()
-  let [isCollapsed,setIsCollapsed]=useState(false)
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   let handleToggle =()=>{
-    setIsCollapsed(!isCollapsed)
+    onToggle()
   }
   let logOut =()=>{
     localStorage.removeItem("adminToken")
@@ -34,7 +33,7 @@ export default function SideBar() {
      
     </Modal>
 
-    <Sidebar collapsed={!isCollapsed}>
+    <Sidebar collapsed={isCollapsed}>
 <Menu>
 <MenuItem className='logo' onClick={ handleToggle} icon={<img src={logo}alt='logo' />}  >  </MenuItem>
   
