@@ -16,7 +16,7 @@ import Masterlayout from './SharedModules/Components/Masterlayout/Masterlayout'
 import NotFound from './SharedModules/Components/NotFound/NotFound'
 import ProtectedRoute from './SharedModules/Components/ProtectedRoute/ProtectedRoute'
 import UserList from './UsersModule/Components/UserList/UserList'
-import AuthLayout from './SharedModules/Components/Authlayout/AuthLayout '
+import AuthLayout from './SharedModules/Components/AuthLayout/AuthLayout'
 
 const queryClient = new QueryClient();
 
