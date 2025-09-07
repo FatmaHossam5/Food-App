@@ -72,7 +72,7 @@ src/
 
 ## Deployment
 
-This project is configured for deployment on GitHub Pages. The live demo is available at: [https://yourusername.github.io/food-app](https://yourusername.github.io/food-app)
+This project is configured for deployment on GitHub Pages. The live demo is available at: [https://fatmahossam5.github.io/Food-App](https://fatmahossam5.github.io/Food-App)
 
 ## Contributing
 
