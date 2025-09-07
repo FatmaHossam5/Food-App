@@ -7,186 +7,553 @@ import Modal from 'react-bootstrap/Modal';
 import DataNo from '../../../assets/imgs/DataNo.svg'
 import avatar from '../../../assets/imgs/avatar.png'
 import { ToastContainer, toast } from 'react-toastify';
+import EnhancedTable from '../../../Components/SharedUI/EnhancedTable/EnhancedTable';
+import Pagination from '../../../Components/SharedUI/Pagination/Pagination';
+import './UserList.css';
 
 
 
 export default function UserList() {
 const[UserList,setUserList]=useState([])
 const [pagesArray,setPagesArray]=useState([])
-const[searchInput,setSearchInput]=useState()
-const[searchRole,setSearchRole]=useState()
+const[searchInput,setSearchInput]=useState('')
+const[searchRole,setSearchRole]=useState('')
 const[modalState,setModalState]=useState("close");
 const[itemId,setItemId]=useState(0)
+const[selectedUser,setSelectedUser]=useState(null)
+const[loading,setLoading]=useState(false)
+const[deleteLoading,setDeleteLoading]=useState(false)
+const[currentPage,setCurrentPage]=useState(1)
+const[totalPages,setTotalPages]=useState(0)
+const[sortConfig,setSortConfig]=useState({key: null, direction: 'asc'})
+const[pageSize,setPageSize]=useState(10)
 
 
-const showDeleteModal =(id)=>{
-  setModalState("delete-user")
-  setItemId(id)
-  
-    }
-  const handleClose = () => setModalState("close");
 
-
-const getUsersList =(pageNo,userName,groups)=>{
-axios.get("https://upskilling-egypt.com:3006/api/v1/Users/",{
-  headers:{Authorization:`Bearer ${localStorage.getItem("adminToken")}`},
-  params:{pageSize:10,
-    pageNumber:pageNo,
-    userName,
-    groups
-  }
-})
-  .then((response)=>{
-  console.log(response?.data?.data);
-  setPagesArray(Array(response.data.totalNumberOfPages).fill().map((_,i)=>i+1))
-
-  setUserList(response?.data?.data)
-}).catch((error)=>{console.log(error);})
+const showViewModal = (user) => {
+  setSelectedUser(user);
+  setModalState("view-user");
 }
-const getNameValue =(select)=>{
-setSearchInput(select.target.value)
-getUsersList(1,select.target.value,searchRole)
-}
- const getRoleValue =(select)=>{
-  setSearchRole(select.target.value)
-  getUsersList(1,searchInput,select.target.value)
- }
+
+const handleClose = () => {
+  setModalState("close");
+  setSelectedUser(null);
+};
 
 
- const deleteUser =()=>{
-  axios.delete(`https://upskilling-egypt.com:443/api/v1/Users/${itemId}`,{headers:{
-    Authorization:`Bearer ${localStorage.getItem('adminToken')}`
-  }}).then((response)=>{
-    console.log(response);
-    handleClose()
-    getUsersList()
-
-  }).catch((error)=>{
+const getUsersList = async (pageNo = 1, userName = '', groups = '') => {
+  setLoading(true);
+  try {
+    const response = await axios.get("https://upskilling-egypt.com:3006/api/v1/Users/", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+      params: {
+        pageSize: pageSize,
+        pageNumber: pageNo,
+        userName,
+        groups
+      }
+    });
+    
+    console.log(response?.data?.data);
+    setPagesArray(Array(response.data.totalNumberOfPages).fill().map((_, i) => i + 1));
+    setUserList(response?.data?.data);
+    setCurrentPage(pageNo);
+    setTotalPages(response.data.totalNumberOfPages);
+    
+  } catch (error) {
     console.log(error);
-  })
- }
+    toast.error('Failed to load users. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+}
+const getNameValue = (select) => {
+  setSearchInput(select.target.value);
+  getUsersList(1, select.target.value, searchRole);
+}
+
+const getRoleValue = (select) => {
+  setSearchRole(select.target.value);
+  getUsersList(1, searchInput, select.target.value);
+}
+
+const clearFilters = () => {
+  setSearchInput('');
+  setSearchRole('');
+  getUsersList(1, '', '');
+}
+
+
+
+// Handle sorting
+const handleSort = (key, direction) => {
+  setSortConfig({ key, direction });
+  // In a real app, you might want to sort on the server side
+  // For now, we'll sort locally
+}
+
+
+// Handle page size change
+const handlePageSizeChange = (newPageSize) => {
+  setPageSize(newPageSize);
+  setCurrentPage(1);
+  getUsersList(1, searchInput, searchRole);
+}
+
+
+
 useEffect(()=>{
   getUsersList(1)
 },[])
-  return (
-   <>
-   
-   <Header title={"Users List"} paragraph={'You can now add your items that any user can order it from the Application and you can edit'}/>
-   <Modal show={modalState==='delete-user'} onHide={handleClose}>
-       
-       <Modal.Body>
-       <div className="delete-container">
-          <div className="icons text-end">
-        <i onClick={handleClose} className="fa-regular fa-circle-xmark text-danger "></i>
-          </div>
-          <div className="text-center">
-            <div className="text-center">
-            <img className=' '  src={DataNo} alt="msg-NoData" />
-            </div>
-            <h5 className='py-3'> Delete This Favorite Item ? </h5>
-          <span>are you sure you want to delete this item ? if you are sure just click on delete it</span>
-          </div>
-         
+  // Define table columns
+  const columns = [
+    {
+      key: 'userName',
+      title: 'Username',
+      sortable: true,
+      render: (value, row) => (
+        <div className="user-info">
+          <strong>{value}</strong>
+        </div>
+      )
+    },
+    {
+      key: 'imagePath',
+      title: 'Avatar',
+      sortable: false,
+      width: '80px',
+      render: (value, row) => (
+        <div className="user-avatar-container">
+          <img
+            className="user-avatar"
+            src={value ? `https://upskilling-egypt.com/${value}` : avatar}
+            alt={`${row.userName}'s avatar`}
+            onError={(e) => {
+              e.target.src = avatar;
+            }}
+          />
+        </div>
+      )
+    },
+    {
+      key: 'group',
+      title: 'Role',
+      sortable: true,
+      render: (value) => (
+        <span className={`role-badge ${value.name.toLowerCase()}`}>
+          {value.name}
+        </span>
+      )
+    },
+    {
+      key: 'phoneNumber',
+      title: 'Phone',
+      sortable: true,
+      render: (value) => (
+        <div className="contact-info">
+          <i className="fa-solid fa-phone me-2"></i>
+          {value || 'N/A'}
+        </div>
+      )
+    },
+    {
+      key: 'email',
+      title: 'Email',
+      sortable: true,
+      render: (value) => (
+        <div className="email-info">
+          <i className="fa-solid fa-envelope me-2"></i>
+          {value}
+        </div>
+      )
+    },
+    {
+      key: 'actions',
+      title: 'Actions',
+      sortable: false,
+      width: '60px',
+      render: (value, row) => (
+        <div className="action-buttons">
+          <button
+            className="action-btn view-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              showViewModal(row);
+            }}
+            aria-label={`View user ${row.userName}`}
+            title="View User Details"
+          >
+            <i className="fa-solid fa-eye"></i>
+          </button>
+        </div>
+      )
+    }
+  ];
 
-         
-          <div className="delete-btn text-end">
-            <button onClick={deleteUser} className='text-white bg-danger btn btn-outline-danger   border-danger rounded-2  '>Delete This Item </button>
+  return (
+    <>
+      <ToastContainer />
+      
+      {/* Enhanced Header */}
+      <div className="user-list-header">
+        <div className="container">
+          <h1 className="user-list-title">Users Management</h1>
+          <p className="user-list-subtitle">
+            Manage and monitor all users in your system. View, search, and manage user accounts with ease.
+          </p>
+        </div>
+      </div>
+
+      <div className="container user-list-container">
+        {/* Enhanced Search and Filter Section */}
+        <div className="search-filter-section">
+          <div className="search-filter-header">
+            <h3 className="search-filter-title">
+              <i className="fa-solid fa-search me-2"></i>
+              Search & Filter Users
+            </h3>
+            <div className="search-stats">
+              <span className="search-results-count">
+                <i className="fa-solid fa-users me-1"></i>
+                {UserList.length} users found
+              </span>
+            </div>
+          </div>
+          
+          <div className="search-inputs-container">
+          <div className="search-inputs-row">
+              <div className="search-input-group search-input-primary">
+                <label htmlFor="userNameSearch">
+                  <i className="fa-solid fa-user me-1"></i>
+                  Search by Username
+                </label>
+                <div className="input-with-icon">
+                  <i className="fa-solid fa-search input-icon"></i>
+              <input
+                id="userNameSearch"
+                type="text"
+                className="enhanced-search-input"
+                    placeholder="Type username to search..."
+                value={searchInput}
+                onChange={getNameValue}
+                aria-label="Search users by username"
+              />
+                  {searchInput && (
+                    <button
+                      className="clear-input-btn"
+                      onClick={() => {
+                        setSearchInput('');
+                        getUsersList(1, '', searchRole);
+                      }}
+                      aria-label="Clear search"
+                    >
+                      <i className="fa-solid fa-times"></i>
+                    </button>
+                  )}
+                </div>
+            </div>
+              
+            <div className="search-input-group">
+                <label htmlFor="roleFilter">
+                  <i className="fa-solid fa-shield me-1"></i>
+                  Filter by Role
+                </label>
+                <div className="select-with-icon">
+                  <i className="fa-solid fa-filter input-icon"></i>
+              <select
+                id="roleFilter"
+                className="enhanced-select"
+                value={searchRole}
+                onChange={getRoleValue}
+                aria-label="Filter users by role"
+              >
+                <option value="">All Roles</option>
+                <option value="1">Admin</option>
+                <option value="2">User</option>
+              </select>
+            </div>
+              </div>
+              
+              <div className="search-actions">
+              <button
+                  className="btn btn-outline-secondary btn-enhanced clear-filters-btn"
+                onClick={clearFilters}
+                disabled={!searchInput && !searchRole}
+                aria-label="Clear all filters"
+              >
+                  <i className="fa-solid fa-eraser me-2"></i>
+                  Clear All
+                </button>
+                
+                <button
+                  className="btn btn-primary btn-enhanced search-btn"
+                  onClick={() => getUsersList(1, searchInput, searchRole)}
+                  disabled={loading}
+                  aria-label="Apply search and filters"
+                >
+                  {loading ? (
+                    <>
+                      <div className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></div>
+                      Searching...
+                    </>
+                  ) : (
+                    <>
+                      <i className="fa-solid fa-search me-2"></i>
+                      Search
+                    </>
+                  )}
+              </button>
+              </div>
+            </div>
+            
+            {/* Active Filters Display */}
+            {(searchInput || searchRole) && (
+              <div className="active-filters">
+                <span className="active-filters-label">
+                  <i className="fa-solid fa-filter me-1"></i>
+                  Active Filters:
+                </span>
+                <div className="filter-tags">
+                  {searchInput && (
+                    <span className="filter-tag">
+                      <i className="fa-solid fa-user me-1"></i>
+                      Username: "{searchInput}"
+                      <button
+                        className="filter-tag-remove"
+                        onClick={() => {
+                          setSearchInput('');
+                          getUsersList(1, '', searchRole);
+                        }}
+                        aria-label="Remove username filter"
+                      >
+                        <i className="fa-solid fa-times"></i>
+                      </button>
+                    </span>
+                  )}
+                  {searchRole && (
+                    <span className="filter-tag">
+                      <i className="fa-solid fa-shield me-1"></i>
+                      Role: {searchRole === '1' ? 'Admin' : 'User'}
+                      <button
+                        className="filter-tag-remove"
+                        onClick={() => {
+                          setSearchRole('');
+                          getUsersList(1, searchInput, '');
+                        }}
+                        aria-label="Remove role filter"
+                      >
+                        <i className="fa-solid fa-times"></i>
+                      </button>
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
-   
-   
-       </Modal.Body>
-      
-     </Modal>
-  
-  
-   <div className="container m-auto">
-    <div className="col-md-12 m-3">
-    <h5>Users Table Details</h5>
-   <span>You can check all details</span>
-    </div>
-  
-<div className="inputs d-flex justify-content-evenly mb-3  ">
-  <div className="col-md-5 ">
-  <input onChange={getNameValue} type="text" className='col-md-4 form-control'placeholder='search By UserName' />
 
-  </div>
-  <div className="col-md-4 ms-5">
-  <select onChange={getRoleValue} className="form-select">
-                  <option value="" className="text-muted">
-                    search by role
-                  </option>
-                  <option value="1">admin</option>
-                  <option value="2">user</option>
-                </select>
+        {/* Enhanced Table Section */}
+        <div className="table-section">
+          <div className="table-header">
+            <div className="table-header-main">
+              <div className="table-title-section">
+                <h3 className="table-title">
+                  <i className="fa-solid fa-users me-2"></i>
+                  Users List
+                </h3>
+                <div className="table-stats">
+                  <div className="stat-item">
+                    <i className="fa-solid fa-users stat-icon"></i>
+                    <span className="stat-value">{UserList.length}</span>
+                    <span className="stat-label">Users</span>
+                  </div>
+                  <div className="stat-divider"></div>
+                  <div className="stat-item">
+                    <i className="fa-solid fa-file-alt stat-icon"></i>
+                    <span className="stat-value">{currentPage}</span>
+                    <span className="stat-label">of {totalPages}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="table-actions">
+                <button
+                  className="table-action-btn refresh-btn"
+                  onClick={() => getUsersList(currentPage, searchInput, searchRole)}
+                  disabled={loading}
+                  title="Refresh data"
+                >
+                  <i className={`fa-solid fa-sync-alt ${loading ? 'fa-spin' : ''}`}></i>
+                </button>
+                
+              </div>
+            </div>
+            
+            <div className="table-subtitle-section">
+              <div className="table-info">
+                <div className="info-item">
+                  <i className="fa-solid fa-info-circle me-1"></i>
+                  <span>
+                    {searchInput || searchRole 
+                      ? `Filtered results from search criteria`
+                      : `All users in the system`
+                    }
+                  </span>
+                </div>
+                {UserList.length > 0 && (
+                  <div className="info-item">
+                    <i className="fa-solid fa-clock me-1"></i>
+                    <span>Last updated: {new Date().toLocaleTimeString()}</span>
+                  </div>
+                )}
+              </div>
+              
+              <div className="table-help">
+                <button
+                  className="help-btn"
+                  onClick={() => {
+                    // Add help functionality
+                    console.log('Show help');
+                  }}
+                  title="Table help and tips"
+                >
+                  <i className="fa-solid fa-question-circle"></i>
+                  <span>Help</span>
+                </button>
+              </div>
+            </div>
+          </div>
 
-  </div>
-</div>
+          <EnhancedTable
+            data={UserList}
+            columns={columns}
+            loading={loading}
+            selectable={false}
+            sortable={true}
+          
+            onSort={handleSort}
+            emptyStateMessage={
+              searchInput || searchRole 
+                ? "No users match your current search criteria. Try adjusting your filters."
+                : "There are no users in the system yet."
+            }
+            emptyStateIcon="👥"
+            showRowNumbers={true}
+            hoverable={true}
+            striped={true}
+          />
+        </div>
 
- 
-   <table class="table  table-striped">
-  <thead>
-    <tr>
-      
-      <th scope="col">#</th>
-      <th scope="col"> Name</th>
-      <th scope="col">Image</th>
-      <th scope="col">GroupName</th>
-      <th scope="col">Phone</th>
-      <th scope="col">Email</th>
-      <th scope="col">Action</th>
-
-
-      
-
-    </tr>
-  </thead>
-  <tbody>
-    {UserList.map((user,index)=><>
-
-      <tr>
-      <th scope="row">{index+1}</th>
-      <td>{user.userName}</td>
-      
-   
-      <td>
-      <div className="img-container">
-      {user.imagePath?(<img className='img-fluid' src={`https://upskilling-egypt.com/`+user.imagePath} />):(<img className='img-fluid'src={avatar}/>)}
-
+        {/* Enhanced Pagination */}
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => getUsersList(page, searchInput, searchRole)}
+            showFirstLast={true}
+            showPrevNext={true}
+            maxVisiblePages={5}
+            disabled={loading}
+          />
+        )}
       </div>
-      </td>
-      
 
-    
-      <td className='role'>{user.group.name}</td>
-      <td>{user.phoneNumber}</td>
-      <td>{user.email}</td>
-      <td> <i onClick={()=>showDeleteModal(user.id)} className='fa-solid fa-trash text-danger'></i> </td>
+      {/* Enhanced View Modal */}
+      <Modal show={modalState === 'view-user'} onHide={handleClose} className="enhanced-modal view-modal" size="lg">
+        <Modal.Header closeButton className="view-modal-header">
+          <Modal.Title>
+            <i className="fa-solid fa-user me-2"></i>
+            User Details
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="view-modal-body">
+          {selectedUser && (
+            <div className="user-details-container">
+              {/* User Profile Section */}
+              <div className="user-profile-section">
+                <div className="user-avatar-large">
+                  <img
+                    src={selectedUser.imagePath ? `https://upskilling-egypt.com/${selectedUser.imagePath}` : avatar}
+                    alt={`${selectedUser.userName}'s avatar`}
+                    onError={(e) => {
+                      e.target.src = avatar;
+                    }}
+                  />
+                </div>
+                <div className="user-basic-info">
+                  <h3 className="user-name">{selectedUser.userName}</h3>
+                  <div className="user-role-badge">
+                    <span className={`role-badge ${selectedUser.group?.name?.toLowerCase()}`}>
+                      <i className="fa-solid fa-shield me-1"></i>
+                      {selectedUser.group?.name || 'No Role'}
+                    </span>
+                  </div>
+                </div>
+              </div>
 
+              {/* User Information Grid */}
+              <div className="user-info-grid">
+                <div className="info-card">
+                  <div className="info-icon">
+                    <i className="fa-solid fa-envelope"></i>
+                  </div>
+                  <div className="info-content">
+                    <h4 className="info-label">Email Address</h4>
+                    <p className="info-value">{selectedUser.email || 'Not provided'}</p>
+                  </div>
+                </div>
 
+                <div className="info-card">
+                  <div className="info-icon">
+                    <i className="fa-solid fa-phone"></i>
+                  </div>
+                  <div className="info-content">
+                    <h4 className="info-label">Phone Number</h4>
+                    <p className="info-value">{selectedUser.phoneNumber || 'Not provided'}</p>
+                  </div>
+                </div>
 
+                <div className="info-card">
+                  <div className="info-icon">
+                    <i className="fa-solid fa-id-card"></i>
+                  </div>
+                  <div className="info-content">
+                    <h4 className="info-label">User ID</h4>
+                    <p className="info-value">{selectedUser.id || 'N/A'}</p>
+                  </div>
+                </div>
 
-    </tr>
-    </>)}
+                <div className="info-card">
+                  <div className="info-icon">
+                    <i className="fa-solid fa-calendar"></i>
+                  </div>
+                  <div className="info-content">
+                    <h4 className="info-label">Account Status</h4>
+                    <p className="info-value">
+                      <span className="status-badge active">
+                        <i className="fa-solid fa-check-circle me-1"></i>
+                        Active
+                      </span>
+            </p>
+          </div>
+                </div>
+              </div>
+
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer className="view-modal-footer">
+          <button
+            className="btn btn-primary-enhanced btn-enhanced"
+            onClick={handleClose}
+          >
+            <i className="fa-solid fa-check me-2"></i>
+            Close
+          </button>
+        </Modal.Footer>
+      </Modal>
+
    
-   
- 
-  </tbody>
-</table>
-<nav aria-label="...">
-  <ul className="pagination pagination-l">
-   {pagesArray.map((pageNo)=>    <li  className="page-item"><a onClick={()=>getUsersList(pageNo,searchInput,searchRole)} className="page-link">{pageNo}</a></li>
-)}
-    
-    
-    
-    
-    
-  
-  </ul>
-</nav>
-   </div>
-   
-   </>
+    </>
   )
 }
