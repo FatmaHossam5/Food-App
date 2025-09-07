@@ -12,11 +12,11 @@ import ResetPassword from './AuthModule/Components/ResetPassword/ResetPassword'
 import CategoriesList from './CategoriesModule/Compponents/CategoriesList/CategoriesList'
 import Home from './HomeModule/Components/Home/Home'
 import RecipesList from './RecipesModule/Components/RecipesList/RecipesList'
-import AuthLayout from './SharedModules/Components/Authlayout/AuthLayout '
 import Masterlayout from './SharedModules/Components/Masterlayout/Masterlayout'
 import NotFound from './SharedModules/Components/NotFound/NotFound'
 import ProtectedRoute from './SharedModules/Components/ProtectedRoute/ProtectedRoute'
 import UserList from './UsersModule/Components/UserList/UserList'
+import AuthLayout from './SharedModules/Components/Authlayout/AuthLayout '
 
 const queryClient = new QueryClient();
 
