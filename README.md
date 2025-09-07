@@ -1,16 +1,40 @@
 # Food App 🍽️
 
-A modern React-based food application built with Vite, featuring user authentication, recipe management, and category organization.
+A modern React-based food application built with Vite, featuring **Admin-only** user authentication via email, recipe management, and category organization.
+
+## ⚠️ Admin Access Only
+
+This application is designed specifically for **Admin users** with email-based authentication. The system includes comprehensive admin permissions for user and content management.
+
+### Admin Roles & Permissions
+
+The Admin user has the following roles and capabilities:
+
+```json
+{
+  "roles": [
+    "Admin",
+    "canAddUser",
+    "canUpdateUser", 
+    "canDeleteUser",
+    "canGetUserById",
+    "canGetCurrentUser",
+    "canGetAllUsers",
+    "canChangePassword"
+  ]
+}
+```
 
 ## Features
 
-- 🔐 User Authentication (Login/Register/Password Reset)
+- 🔐 **Admin Email Authentication** (Login/Password Reset/Change Password)
 - 📝 Recipe Management
 - 📂 Category Organization
-- 👥 User Management
+- 👥 **Full User Management** (DeleteUsers)
 - 🎨 Modern UI with Bootstrap and React Bootstrap
 - 📱 Responsive Design
 - 🔄 Real-time Data with React Query
+- 🔒 **Secure Admin Dashboard**
 
 ## Tech Stack
 
@@ -29,6 +53,7 @@ A modern React-based food application built with Vite, featuring user authentica
 
 - Node.js (version 16 or higher)
 - npm or yarn
+- **Admin email credentials** for authentication
 
 ### Installation
 
@@ -50,6 +75,21 @@ npm run dev
 
 4. Open your browser and navigate to `http://localhost:5173`
 
+### Admin Login
+
+To access the application, you must log in with **Admin email credentials**. The system will authenticate your email and grant access based on your admin roles and permissions.
+
+### 🎯 Demo Admin Account
+
+For testing purposes, you can use the following demo admin account:
+
+```
+Email: admin@demo.com
+Password: Admin123
+```
+
+**Note**: This is a demo account with full admin privileges. Please use it responsibly for testing and demonstration purposes only.
+
 ### Available Scripts
 
 - `npm run dev` - Start development server
@@ -61,27 +101,34 @@ npm run dev
 
 ```
 src/
-├── AuthModule/          # Authentication components
-├── CategoriesModule/    # Category management
+├── AuthModule/          # Admin authentication components
+│   ├── Login/           # Admin login with email
+│   ├── ForgetPassword/  # Password reset functionality
+│   ├── ChangePassword/  # Admin password change
+│   └── ResetPassword/   # Password reset confirmation
+├── CategoriesModule/    # Category management (Admin)
 ├── Components/          # Shared UI components
-├── HomeModule/          # Home page components
-├── RecipesModule/       # Recipe management
+├── HomeModule/          # Admin dashboard
+├── RecipesModule/       # Recipe management (Admin)
 ├── SharedModules/       # Shared layouts and utilities
-└── UsersModule/         # User management
+└── UsersModule/         # User management (Admin only)
 ```
 
 ## Deployment
 
 This project is configured for deployment on GitHub Pages. The live demo is available at: [https://fatmahossam5.github.io/Food-App](https://fatmahossam5.github.io/Food-App)
 
-## Contributing
+### 🚀 Try the Live Demo
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Visit the live demo and use the demo admin account to explore all features:
 
-## License
 
-This project is licensed under the MIT License.
+
+**Available Features to Test:**
+- ✅ Admin Dashboard
+- ✅ User Management (View/Delete Users)
+- ✅ Recipe Management
+- ✅ Category Management
+- ✅ Password Change Functionality
+- ✅ Responsive Design
+

@@ -5,6 +5,7 @@ import logo from "../../../assets/imgs/3.png";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ForgetPassword from '../../../AuthModule/Components/ForgetPassword/ForgetPassword';
+import ChangePassword from '../../../AuthModule/Components/ChangePassword/ChangePassword';
 
 export default function SideBar({ isCollapsed, onToggle }) {
   let navigate=useNavigate()
@@ -28,7 +29,7 @@ export default function SideBar({ isCollapsed, onToggle }) {
     <Modal show={show} onHide={handleClose}>
      
       <Modal.Body>
-        <ForgetPassword handleClose={handleClose}/>
+        <ChangePassword handleClose={handleClose}/>
       </Modal.Body>
      
     </Modal>
